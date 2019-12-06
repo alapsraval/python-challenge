@@ -18,22 +18,20 @@ with open(csv_path) as csv_file:
     total_amount = 0
     previous_amount = 0
     current_amount = 0
-    changes = []
+    changes = {}
     total_change = 0
     average_change = 0 
     max_change = 0
     min_change = 0
     
-    print ("Financial Analysis\n----------------")
+    print ("Financial Analysis\n------------------")
 
     for row in csv_reader:
         current_amount = row[1]
         
-        
         #Calculate change in "Profit/Losses" from a previous period after the first month.
         if total_months > 0:
-            #changes.update({row[0]: (int(current_amount) - int(previous_amount))})
-            changes.append(int(current_amount) - int(previous_amount))
+            changes.update({row[0]: (int(current_amount) - int(previous_amount))})
         # The total number of months included in the dataset
         total_months = total_months + 1
         
@@ -42,24 +40,32 @@ with open(csv_path) as csv_file:
         
         # Set value for the next iteration
         previous_amount = current_amount
-    print(changes)
     
-    #for (month, change) in changes.items():
-    for change in changes:
+    for (month, change) in changes.items():
         # The total change in "Profit/Losses"
         total_change = total_change + change
         
     #The average of the changes in "Profit/Losses" over the entire period
     average_change = total_change/total_months
+
+    # The greatest increase in profits (date and amount) over the entire period
+    max_change = max(changes.items(), key=lambda x : x[1])
+    
+    # The greatest decrease in losses (date and amount) over the entire period
+    min_change = min(changes.items(), key=lambda x : x[1])
         
     #Print results
     print (f"Total Months: {total_months}")
     print (f"Total: ${total_amount}")
     print (f"Average Change: ${round(average_change,2)}")
-    print (f"Greatest Increase in Profits: ${max(changes)}")
-    print (f"Greatest Decrease in Profits: ${min(changes)}")
+    print (f"Greatest Increase in Profits: {max_change[0]} (${max_change[1]})")
+    print (f"Greatest Decrease in Profits: {min_change[0]} (${min_change[1]})")
     
-
-  # The greatest increase in profits (date and amount) over the entire period
-
-  # The greatest decrease in losses (date and amount) over the entire period
+    # In addition, your final script should both print the analysis to the terminal and export a text file with the results.
+    with open('results.txt', 'w') as output_file: 
+        output_file.write ("Financial Analysis\n------------------\n")
+        output_file.write (f"Total Months: {total_months}\n")
+        output_file.write (f"Total: ${total_amount}\n")
+        output_file.write (f"Average Change: ${round(average_change,2)}\n")
+        output_file.write (f"Greatest Increase in Profits: {max_change[0]} (${max_change[1]})\n")
+        output_file.write (f"Greatest Decrease in Profits: {min_change[0]} (${min_change[1]})")
