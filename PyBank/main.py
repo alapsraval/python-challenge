@@ -24,7 +24,7 @@ with open(csv_path) as csv_file:
     max_change = 0
     min_change = 0
     
-    print ("Financial Analysis\n------------------")
+    print ("Financial Analysis\n----------------")
 
     for row in csv_reader:
         current_amount = row[1]
@@ -55,7 +55,7 @@ with open(csv_path) as csv_file:
     #Print results
     print (f"Total Months: {total_months}")
     print (f"Total: ${total_amount}")
-    print (f"Average Change: ${average_change}")
+    print (f"Average Change: ${round(average_change,2)}")
     print (f"Greatest Increase in Profits: ${max(changes)}")
     print (f"Greatest Decrease in Profits: ${min(changes)}")
     
