@@ -3,9 +3,8 @@
 import os
 import csv
 
-csv_path = 'Resources/budget_data.csv'
-#csv_path = #os.path.join('Resources', 'budget_data.csv')
-#csvPath = os.path.abspath("Resources/budget_data.csv")
+#csv_path = 'Resources/budget_data.csv'
+csv_path = os.path.join('Resources', 'budget_data.csv')
 
 with open(csv_path) as csv_file:
 
@@ -32,6 +31,7 @@ with open(csv_path) as csv_file:
         #Calculate change in "Profit/Losses" from a previous period after the first month.
         if total_months > 0:
             changes.update({row[0]: (int(current_amount) - int(previous_amount))})
+            
         # The total number of months included in the dataset
         total_months = total_months + 1
         
@@ -40,13 +40,14 @@ with open(csv_path) as csv_file:
         
         # Set value for the next iteration
         previous_amount = current_amount
-    
+
     for (month, change) in changes.items():
         # The total change in "Profit/Losses"
         total_change = total_change + change
         
-    #The average of the changes in "Profit/Losses" over the entire period
-    average_change = total_change/total_months
+    #The average of the changes in "Profit/Losses" over the entire period. Make sure to devide total_change by n-1
+
+    average_change = total_change/(total_months-1)
 
     # The greatest increase in profits (date and amount) over the entire period
     max_change = max(changes.items(), key=lambda x : x[1])
